@@ -30,6 +30,7 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.storage.StorageLevel;
 import org.elasticsearch.spark.rdd.api.java.JavaEsSpark;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -197,7 +198,8 @@ public final class ElasticsearchDependenciesJob {
                 .errorCount(l.errorCount() + r.errorCount())
                 .build())
               .values()
-              .map(DEPENDENCY_LINK_JSON);
+              .map(DEPENDENCY_LINK_JSON)
+            .persist(StorageLevel.MEMORY_AND_DISK_SER());
 
       if (links.isEmpty()) {
         log.info("No dependency links could be processed from spans in index {}", spanResource);
