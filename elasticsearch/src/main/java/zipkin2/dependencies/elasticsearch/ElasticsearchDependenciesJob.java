@@ -260,18 +260,19 @@ public final class ElasticsearchDependenciesJob {
   static final Function<Tuple2<String, String>, String> JSON_TRACE_ID = new Function<Tuple2<String, String>, String>() {
     /** returns the lower 64 bits of the trace ID */
     @Override public String call(Tuple2<String, String> pair) throws IOException {
-      JsonReader reader = new JsonReader(new StringReader(pair._2));
-      reader.beginObject();
-      while (reader.hasNext()) {
-        String nextName = reader.nextName();
-        if (nextName.equals("traceId")) {
-          String traceId = reader.nextString();
-          return traceId.length() > 16 ? traceId.substring(traceId.length() - 16) : traceId;
-        } else {
-          reader.skipValue();
+      try (JsonReader reader = new JsonReader(new StringReader(pair._2))){
+        reader.beginObject();
+        while (reader.hasNext()) {
+          String nextName = reader.nextName();
+          if (nextName.equals("traceId")) {
+            String traceId = reader.nextString();
+            return traceId.length() > 16 ? traceId.substring(traceId.length() - 16) : traceId;
+          } else {
+            reader.skipValue();
+          }
         }
+        throw new MalformedJsonException("no traceId in " + pair);
       }
-      throw new MalformedJsonException("no traceId in " + pair);
     }
 
     @Override public String toString() {
