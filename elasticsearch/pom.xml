@@ -39,6 +39,12 @@
     </dependency>
 
     <dependency>
+      <groupId>com.esotericsoftware</groupId>
+      <artifactId>kryo-shaded</artifactId>
+      <version>4.0.2</version>
+    </dependency>
+
+    <dependency>
       <groupId>io.zipkin.zipkin2</groupId>
       <artifactId>zipkin-storage-elasticsearch</artifactId>
       <version>${zipkin.version}</version>

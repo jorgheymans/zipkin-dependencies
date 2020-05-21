@@ -113,6 +113,12 @@
                   </includes>
                 </filter>
                 <filter>
+                  <artifact>com.esotericsoftware:*</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </filter>
+                <filter>
                   <artifact>org.lz4:*</artifact>
                   <includes>
                     <include>**</include>
