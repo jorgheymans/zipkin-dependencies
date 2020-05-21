@@ -38,6 +38,7 @@ import zipkin2.DependencyLink;
 import zipkin2.codec.SpanBytesDecoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.apache.spark.storage.StorageLevel.MEMORY_AND_DISK_SER;
 import static org.apache.spark.storage.StorageLevel.MEMORY_ONLY_SER;
 import static zipkin2.internal.DateUtil.midnightUTC;
 
@@ -199,7 +200,7 @@ public final class ElasticsearchDependenciesJob {
                 .build())
               .values()
               .map(DEPENDENCY_LINK_JSON)
-              .persist(MEMORY_ONLY_SER());
+              .persist(MEMORY_AND_DISK_SER());
       if (links.isEmpty()) {
         log.info("No dependency links could be processed from spans in index {}", spanResource);
       } else {
